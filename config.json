@@ -1,0 +1,16 @@
+{
+	"name": "Sticky Matrix Headers",
+
+	"authors": [
+		{
+			"name": "Mark McEver",
+			"email": "mark.mcever@vanderbilt.edu"
+		}
+	],
+
+	"permissions": [
+		"hook_survey_page"
+	],
+
+	"description": "Makes the header for survey matrices always visible (as long as the matrix is visible)."
+}
