@@ -1,5 +1,8 @@
 <?php
-namespace ExternalModules;
+namespace Vanderbilt\StickyMatrixHeadersExternalModule;
+
+use ExternalModules\AbstractExternalModule;
+use ExternalModules\ExternalModules;
 
 class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 	function hook_survey_page() {

@@ -1,6 +1,8 @@
 {
 	"name": "Sticky Matrix Headers",
 
+	"namespace": "Vanderbilt\\StickyMatrixHeadersExternalModule",
+
 	"authors": [
 		{
 			"name": "Mark McEver",
