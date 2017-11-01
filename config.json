@@ -15,5 +15,5 @@
 		"hook_survey_page"
 	],
 
-	"description": "Makes the header for survey matrices always visible (as long as the matrix is visible)."
+	"description": "Makes the matrix header for a matrix of fields always visible (as long as the matrix is visible) - for surveys only."
 }
