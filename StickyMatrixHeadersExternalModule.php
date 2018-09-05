@@ -8,11 +8,6 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 	function hook_survey_page() {
 		?>
 		<script>
-			// jQuery.fn.outerHTML = function(s) {
-				// return s
-					// ? this.before(s).remove()
-					// : jQuery("<p>").append(this.eq(0).clone()).html();
-			// };
 			$(function(){
 				
 				// each matrix in the instrument will have an object here like:
