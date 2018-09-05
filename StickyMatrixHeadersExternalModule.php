@@ -8,13 +8,29 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 	function hook_survey_page() {
 		?>
 		<script>
+			// jQuery.fn.outerHTML = function(s) {
+				// return s
+					// ? this.before(s).remove()
+					// : jQuery("<p>").append(this.eq(0).clone()).html();
+			// };
 			$(function(){
+				
+				// each matrix in the instrument will have an object here like:
+				// {header: _, floatingHeader: _, form: _}
+				var matrices = []
+				
+				// find headers and create floating headers
 				$('.headermatrix').each(function(){
 					var header = $(this)
 					var form = header.closest('form')
-					
 					var floatingHeader = $('<div></div>').append(header.clone())
-
+					
+					matrices.push({
+						"header": header,
+						"form": form,
+						"floatingHeader": floatingHeader
+					})
+					
 					floatingHeader.css({
 						position: 'fixed',
 						display: 'none',
@@ -27,25 +43,38 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 						'padding-left': form.width() - header.width()
 					})
 
-					var setFloatingHeaderWidth = function(){
-						floatingHeader.css({
-							left: form.position().left,
-							width: form.width(),
-							'padding-left': form.width() - header.width()
-						})
-					}
-
-					setFloatingHeaderWidth()
-					$(window).on('resize', function(){
-					    setFloatingHeaderWidth()
-					})
-
 					$('body').append(floatingHeader)
-
-					$(window).scroll(function(){
+				})
+				
+				var setFloatingHeaderWidth = function(matrix){
+					matrix.floatingHeader.css({
+						left: matrix.form.position().left,
+						width: matrix.form.width(),
+						'padding-left': matrix.form.width() - matrix.header.width()
+					})
+				}
+				
+				// go ahead and set widths for each floating header
+				for(i=0;i<matrices.length;i++){
+					setFloatingHeaderWidth(matrices[i])
+				}
+				
+				$(window).on('resize', function(){
+					for(i=0;i<matrices.length;i++){
+						setFloatingHeaderWidth(matrices[i])
+					}
+				})
+				
+				// add a window scroll callback so that we know when to hide/show the correct floatingHeader
+				$(window).scroll(function(){
+					for (i = 0; i < matrices.length; i++){
+						var header = matrices[i].header
+						var floatingHeader = matrices[i].floatingHeader
+						var form = matrices[i].form
+						
 						var scrollTop = $(window).scrollTop()
-						var headerTop = header.position().top
-
+						var headerTop = header.offset().top
+						
 						if(scrollTop < headerTop){
 							floatingHeader.css({
 								display: 'none'
@@ -69,7 +98,7 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 								top: top + 'px'
 							})
 						}
-					})
+					}
 				})
 			})
 		</script>
