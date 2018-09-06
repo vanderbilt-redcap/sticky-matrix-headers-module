@@ -9,12 +9,11 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 		?>
 		<script>
 			$(function(){
-				
-				// each matrix in the instrument will have an object here like:
+				// each matrix in the instrument will have an object in matrices array like:
 				// {header: _, floatingHeader: _, form: _}
 				var matrices = []
 				
-				// find headers and create floating headers
+				// create floating headers
 				$('.headermatrix').each(function(){
 					var header = $(this)
 					var form = header.closest('form')
@@ -29,7 +28,7 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 					floatingHeader.css({
 						position: 'fixed',
 						display: 'none',
-						top: '0px',
+						top: '-5px',
 						left: form.position().left,
 						width: form.width(),
 						background: '#f3f3f3',
@@ -54,13 +53,14 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 					setFloatingHeaderWidth(matrices[i])
 				}
 				
+				// and whenever window resizes
 				$(window).on('resize', function(){
 					for(i=0;i<matrices.length;i++){
 						setFloatingHeaderWidth(matrices[i])
 					}
 				})
 				
-				// add a window scroll callback so that we know when to hide/show the correct floatingHeader
+				// decide when to show each floating header based on scroll
 				$(window).scroll(function(){
 					for (i = 0; i < matrices.length; i++){
 						var header = matrices[i].header
@@ -70,27 +70,21 @@ class StickyMatrixHeadersExternalModule extends AbstractExternalModule {
 						var scrollTop = $(window).scrollTop()
 						var headerTop = header.offset().top
 						
-						if(scrollTop < headerTop){
-							floatingHeader.css({
-								display: 'none'
-							})
-						}
-						else if(scrollTop >= headerTop){
-							var matrixGroup = header.closest('tr').attr('mtxgrp')
-							var lastRow = $('tr[mtxgrp=' + matrixGroup + ']:visible').last()
-							var lastRowTop = lastRow.position().top - floatingHeader.height()
-
-							var top
-							if(scrollTop < lastRowTop ){
-								top = 0
-							}
-							else{
-								top = lastRowTop - scrollTop
-							}
-
+						var matrixGroup = header.closest('tr').attr('mtxgrp')
+						var lastRow = $('tr[mtxgrp=' + matrixGroup + ']:visible').last()
+						var lastRowTop = lastRow.offset().top
+						
+						if (scrollTop > headerTop && scrollTop <= lastRowTop){
+							let top = 0
+							if (scrollTop > (lastRowTop - floatingHeader.height())) top = -(scrollTop - (lastRowTop - floatingHeader.height()) + 2)		// + 2 to prevent floating header from overlapping last row
+							
 							floatingHeader.css({
 								display: 'block',
 								top: top + 'px'
+							})
+						} else {
+							floatingHeader.css({
+								display: 'none'
 							})
 						}
 					}
