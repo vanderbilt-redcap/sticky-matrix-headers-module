@@ -17,5 +17,7 @@
 
 	"description": "Makes the matrix header for a matrix of fields always visible (as long as the matrix is visible) - for surveys only.",
 	
-	"redcap-version-max": "8.10.50"
+	"compatibility": {
+		"redcap-version-max": "8.10.50"
+	}
 }
